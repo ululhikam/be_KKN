@@ -20,18 +20,25 @@ app.use(helmet({
   contentSecurityPolicy: isDev ? false : undefined
 }))
 
-// CORS
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
-  .split(',')
-  .map(o => o.trim())
+// CORS — hardcoded production origins + env overrides
+const defaultOrigins = [
+  'http://localhost:5173',
+  'https://kknmenggah.vercel.app',
+]
+const envOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : []
+const allowedOrigins = [...new Set([...defaultOrigins, ...envOrigins])]
 
 app.use(cors({
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true)
-    } else {
-      callback(new Error(`CORS blocked: ${origin}`))
-    }
+    // Allow requests with no origin (server-to-server, curl, health checks)
+    if (!origin) return callback(null, true)
+    // Allow exact matches
+    if (allowedOrigins.includes(origin)) return callback(null, true)
+    // Allow Vercel preview deployments (*.vercel.app)
+    if (origin.endsWith('.vercel.app')) return callback(null, true)
+    callback(new Error(`CORS blocked: ${origin}`))
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
