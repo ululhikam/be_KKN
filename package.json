@@ -1,12 +1,12 @@
 {
-  "name": "be-man1oki",
+  "name": "kkn-padepokan-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend API for KKN Kelompok 4 - Padepokan Desa Katekan",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/api/index.js",
-    "dev": "ts-node api/index.ts",
+    "dev": "tsx watch src/index.ts",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:seed": "ts-node src/db/seed.ts"
@@ -17,22 +17,33 @@
   "type": "commonjs",
   "dependencies": {
     "@supabase/supabase-js": "^2.104.1",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^7.3.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "multer": "^2.1.1",
     "postgres": "^3.4.9",
+    "uuid": "^10.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
     "@types/multer": "^2.1.0",
     "@types/node": "^25.6.0",
+    "@types/uuid": "^10.0.0",
     "drizzle-kit": "^0.31.10",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
+    "tsx": "^4.23.0",
     "typescript": "^6.0.3"
   }
 }
