@@ -1,41 +1,38 @@
 {
-  "name": "kkn-padepokan-backend",
+  "name": "be-man1oki",
   "version": "1.0.0",
-  "description": "Backend API for KKN Kelompok 4 - Padepokan Desa Katekan",
-  "main": "src/index.ts",
-  "type": "module",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/api/index.js",
+    "dev": "ts-node api/index.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:seed": "ts-node src/db/seed.ts"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.0",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-rate-limit": "^7.3.1",
-    "helmet": "^7.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.1",
-    "uuid": "^10.0.0"
+    "@supabase/supabase-js": "^2.104.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "multer": "^2.1.1",
+    "postgres": "^3.4.9",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/morgan": "^1.9.10",
-    "@types/multer": "^2.2.0",
-    "@types/node": "^26.1.1",
-    "@types/uuid": "^10.0.0",
-    "nodemon": "^3.1.4",
-    "tsx": "^4.23.0",
-    "typescript": "^7.0.2"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "@types/multer": "^2.1.0",
+    "@types/node": "^25.6.0",
+    "drizzle-kit": "^0.31.10",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   }
 }
