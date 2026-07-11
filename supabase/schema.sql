@@ -139,6 +139,7 @@ CREATE POLICY "admins_all" ON admins FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "galeri_public_read" ON galeri FOR SELECT USING (deleted_at IS NULL);
 CREATE POLICY "galeri_auth_write" ON galeri FOR ALL USING (true) WITH CHECK (true);
 
--- ─── SEED DATA REMOVED FOR SECURITY ───
--- Seed data has been removed from the repository file to prevent data leakage.
--- If you need to reseed the database, you can insert rows directly in your Supabase SQL editor.
+-- ─── SEED DATA ─────────────────────────────────────────────────────────────
+-- Seed data (admins & galeri) telah dihapus dari file ini demi keamanan.
+-- Data sudah tersimpan di database Supabase dan tidak terpengaruh.
+-- Jika perlu menambah data baru, gunakan Supabase SQL Editor secara langsung.
