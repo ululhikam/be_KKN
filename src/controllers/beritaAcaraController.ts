@@ -98,6 +98,7 @@ export const create = async (req: AuthenticatedRequest, res: Response): Promise<
     .from('kegiatan')
     .select('id, nama_kegiatan, tanggal_kegiatan')
     .eq('id', kegiatan_id)
+    .is('deleted_at', null)
     .single()
 
   if (!kegiatan) return sendError(res, 'Kegiatan tidak ditemukan', 404)
@@ -162,6 +163,7 @@ export const create = async (req: AuthenticatedRequest, res: Response): Promise<
     .from('kegiatan')
     .update({ status: 'berjalan', updated_at: now.toISOString() })
     .eq('id', kegiatan_id)
+    .is('deleted_at', null)
     .in('status', ['direncanakan'])
 
   return sendSuccess(res, baData, 'Berita acara berhasil dibuat', 201)

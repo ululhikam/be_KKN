@@ -27,6 +27,7 @@ export const getAll = async (req: AuthenticatedRequest, res: Response): Promise<
   let query = supabase
     .from('kegiatan')
     .select('*, penanggung_jawab:admins!kegiatan_penanggung_jawab_id_fkey(id, name, division)', { count: 'exact' })
+    .is('deleted_at', null)
 
   if (search) {
     query = query.or(`nama_kegiatan.ilike.%${search}%,deskripsi.ilike.%${search}%,lokasi.ilike.%${search}%`)
@@ -70,6 +71,7 @@ export const getById = async (req: AuthenticatedRequest, res: Response): Promise
       berita_acara(*)
     `)
     .eq('id', id)
+    .is('deleted_at', null)
     .single()
 
   if (error || !data) {
@@ -174,6 +176,7 @@ export const update = async (req: AuthenticatedRequest, res: Response): Promise<
     .from('kegiatan')
     .update(updates)
     .eq('id', id)
+    .is('deleted_at', null)
     .select()
     .single()
 
@@ -206,6 +209,7 @@ export const updateStatus = async (req: AuthenticatedRequest, res: Response): Pr
     .from('kegiatan')
     .update({ status, updated_at: new Date().toISOString(), updated_by: user.id })
     .eq('id', id)
+    .is('deleted_at', null)
     .select()
     .single()
 
@@ -232,6 +236,7 @@ export const remove = async (req: AuthenticatedRequest, res: Response): Promise<
       deleted_by: user.id
     })
     .eq('id', id)
+    .is('deleted_at', null)
 
   if (error) return sendError(res, 'Gagal menghapus kegiatan')
   return sendSuccess(res, null, 'Kegiatan berhasil dihapus')
