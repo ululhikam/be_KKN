@@ -176,10 +176,13 @@ export const create = async (req: AuthenticatedRequest, res: Response): Promise<
 export const update = async (req: AuthenticatedRequest, res: Response): Promise<any> => {
   const { id } = req.params
   const updates = req.body
+  const { peserta_hadir } = updates
+
   delete updates.id
   delete updates.nomor_ba
   delete updates.dibuat_oleh
   delete updates.created_at
+  delete updates.peserta_hadir // Exclude from BA table update to prevent error
 
   const user = req.user
   if (!user) {
@@ -196,7 +199,32 @@ export const update = async (req: AuthenticatedRequest, res: Response): Promise<
     .select()
     .single()
 
-  if (error) return sendError(res, 'Gagal memperbarui berita acara')
+  if (error) {
+    console.error('Update BA database error:', error)
+    return sendError(res, `Gagal memperbarui berita acara: ${error.message}`)
+  }
+
+  // Update peserta_hadir table by recreating records
+  if (peserta_hadir !== undefined) {
+    // Delete old attendance list
+    await supabase.from('peserta_hadir').delete().eq('berita_acara_id', id)
+
+    // Insert new attendance list if not empty
+    if (peserta_hadir && peserta_hadir.length > 0) {
+      const pesertaData = peserta_hadir.map((p: any) => ({
+        id: uuidv4(),
+        berita_acara_id: id,
+        nama: p.nama,
+        nim: p.nim || null,
+        prodi: p.prodi || null,
+        jabatan: p.jabatan || null,
+        tanda_tangan_url: p.tanda_tangan_url || null
+      }))
+
+      await supabase.from('peserta_hadir').insert(pesertaData)
+    }
+  }
+
   return sendSuccess(res, data, 'Berita acara berhasil diperbarui')
 }
 
