@@ -261,13 +261,19 @@ export const remove = async (req: AuthenticatedRequest, res: Response): Promise<
     return sendError(res, 'Pengguna tidak terautentikasi', 401)
   }
 
-  const { error } = await supabase
+  let dbQuery = supabase
     .from('berita_acara')
     .update({ deleted_at: new Date().toISOString(), deleted_by: user.id })
     .eq('id', req.params.id)
-    .eq('status', 'draft') // Only draft can be deleted
 
-  if (error) return sendError(res, 'Gagal menghapus berita acara (hanya draft yang bisa dihapus)')
+  // If not admin, restrict to draft status only
+  if (user.role !== 'admin') {
+    dbQuery = dbQuery.eq('status', 'draft')
+  }
+
+  const { error } = await dbQuery
+
+  if (error) return sendError(res, 'Gagal menghapus berita acara')
   return sendSuccess(res, null, 'Berita acara berhasil dihapus')
 }
 
