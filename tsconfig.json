@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     /* Tambahkan baris ini untuk membungkam warning */
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
 
     /* Bahasa & Target Lingkungan */
     "target": "ES2022",
