@@ -30,7 +30,7 @@ export const uploadImage = async (req: RequestWithFile, res: Response): Promise<
 
   if (error) {
     console.error('Upload error:', error)
-    return sendError(res, 'Gagal mengunggah file')
+    return sendError(res, `Gagal mengunggah file: ${error.message}`)
   }
 
   const { data: urlData } = supabase.storage
@@ -64,7 +64,10 @@ export const uploadDocument = async (req: RequestWithFile, res: Response): Promi
       upsert: false
     })
 
-  if (error) return sendError(res, 'Gagal mengunggah dokumen')
+  if (error) {
+    console.error('Upload document error:', error)
+    return sendError(res, `Gagal mengunggah dokumen: ${error.message}`)
+  }
 
   const { data: urlData } = supabase.storage
     .from('kkn-padepokan')
